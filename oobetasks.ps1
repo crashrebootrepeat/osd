@@ -20,13 +20,9 @@ Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommuni
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
 sleep -Seconds 30
 
-# Cleanup scheduled Tasks
-Write-Host -ForegroundColor DarkGray "Unregistering Scheduled Tasks"
-Unregister-ScheduledTask -TaskName "Scheduled Task for SendKeys" -Confirm:`$false
-Unregister-ScheduledTask -TaskName "Scheduled Task for OSDCloud post installation" -Confirm:`$false
-
-Write-Host -ForegroundColor DarkGray "Restarting Computer"
-Start-Process PowerShell -ArgumentList "-NoL -C Restart-Computer -Force" -Wait
+Write-Host -ForegroundColor DarkGray "Run WindowsAutoPilotInfoCommunity"
+Start-Process PowerShell -ArgumentList "-NoL -C Get-WindowsAutoPilotInfoCommunity -online -assign -reboot -Force -Verbose" -Wait
+sleep -Seconds 30
 
 Stop-Transcript -Verbose | Out-File
 "@
