@@ -14,9 +14,11 @@ Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementE
 
 Write-Host -ForegroundColor DarkGray "NUGET Package Provider"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait
+sleep -Seconds 30
 
 Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Module Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
+sleep -Seconds 30
 
 # Cleanup scheduled Tasks
 Write-Host -ForegroundColor DarkGray "Unregistering Scheduled Tasks"
