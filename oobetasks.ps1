@@ -16,8 +16,7 @@ sleep -Seconds 60
 
 Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
-                                                
-sleep -Seconds 60
+pause                                                
 
 Stop-Transcript -Verbose | Out-File
 "@
