@@ -2,9 +2,9 @@
 $LogFile = "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\osd\AppLog.log"
  
 # Wrap your script or command in a try-catch block
+
 Try {
-    
-Install-PackageProvider -Name NUGET -Force -wait -ErrorAction Stop
+
 Install-Script -Name get-windowsautopilotinfocommunity -Force -wait -ErrorAction Stop
  
 } Catch {
@@ -12,3 +12,4 @@ Install-Script -Name get-windowsautopilotinfocommunity -Force -wait -ErrorAction
     # Log the error message to the log file
     Add-Content -Path $LogFile -Value $("[" + (Get-Date) + "] " + $_.Exception.Message)
 }
+
