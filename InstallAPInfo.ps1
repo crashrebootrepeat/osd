@@ -1,16 +1,14 @@
-﻿$Global:Transcript = "$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-InstallAPInfo.log"
-Start-Transcript -Path (Join-Path "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" $Global:Transcript) -ErrorAction Ignore
-
-Write-Host -ForegroundColor Green "Install NuGet"
-
-Start-Sleep -Seconds 5
-
-Install-PackageProvider -Name NUGET -Force
-
-Start-Sleep -Seconds 5
-
-Write-Host -ForegroundColor Green "Install NuGet"
-
-Install-Script -Name get-windowsautopilotinfo -Force
-
-Stop-Transcript
+# Define the log file path
+$LogFile = "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\osd\AppLog.txt"
+ 
+# Wrap your script or command in a try-catch block
+Try {
+    
+Install-PackageProvider -Name NUGET -Force -ErrorAction Stop
+Install-Script -Name get-windowsautopilotinfocommunity -Force -ErrorAction Stop
+ 
+} Catch {
+ 
+    # Log the error message to the log file
+    Add-Content -Path $LogFile -Value $("[" + (Get-Date) + "] " + $_.Exception.Message)
+}
