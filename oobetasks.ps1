@@ -1,3 +1,5 @@
+# oobetasks.osdcloud.ch
+
 $scriptFolderPath = "$env:SystemDrive\OSDCloud\Scripts"
 $ScriptPathOOBE = $(Join-Path -Path $scriptFolderPath -ChildPath "OOBE.ps1")
 $ScriptPathSendKeys = $(Join-Path -Path $scriptFolderPath -ChildPath "SendKeys.ps1")
@@ -8,20 +10,16 @@ If(!(Test-Path -Path $scriptFolderPath)) {
 
 $OOBEScript =@"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
-Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
+Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Stop | Out-Null
 
-$LogFile = "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\WTF.log"
- 
-Try {
- 
-    Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait -ErrorAction Stop
-    Start-Process PowerShell -ArgumentList "-NoL -C Install-Script -Name get-windowsautopilotinfocommunity -Force -Verbose" -Wait -ErrorAction Stop
- 
-} Catch {
- 
-    # Log the error message to the log file
-    Add-Content -Path $LogFile -Value $("[" + (Get-Date) + "] " + $_.Exception.Message)
-}
+Write-Host -ForegroundColor DarkGray "NUGET Package Provider"
+Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait
+
+Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
+Start-Process PowerShell -ArgumentList "-NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
+
+Stop-Transcript -Verbose | Out-File
+"@
 
 Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
 
