@@ -10,16 +10,18 @@ $OOBEScript =@"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
-Write-Host -ForegroundColor DarkGray "NUGET Package Provider"
-Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait
-pause
-
-Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
-Start-Process PowerShell -ArgumentList "-NoL -C Install-Script -Name Get-WindowsAutoPilotInfo -Force -Verbose" -Wait
-pause                                                
-
-Stop-Transcript -Verbose | Out-File
-"@
+$LogFile = "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\WTF.log"
+ 
+Try {
+ 
+    Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait -ErrorAction Stop
+    Start-Process PowerShell -ArgumentList "-NoL -C Install-Script -Name get-windowsautopilotinfocommunity -Force -Verbose" -Wait -ErrorAction Stop
+ 
+} Catch {
+ 
+    # Log the error message to the log file
+    Add-Content -Path $LogFile -Value $("[" + (Get-Date) + "] " + $_.Exception.Message)
+}
 
 Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
 
