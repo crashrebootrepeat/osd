@@ -12,6 +12,9 @@ $OOBEScript =@"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Stop | Out-Null
 
+Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
+Start-Process PowerShell -ArgumentList "-NoL -C Install-Module OSD -Force -Verbose" -Wait
+
 Write-Host -ForegroundColor DarkGray "NUGET Package Provider"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait
 
