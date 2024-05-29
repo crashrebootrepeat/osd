@@ -14,9 +14,11 @@ Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementE
 
 Write-Host -ForegroundColor DarkGray "NUGET Package Provider"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait
+sleep -Seconds 15
 
 Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Module Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
+sleep -Seconds 15
 
 Stop-Transcript -Verbose | Out-File
 "@
