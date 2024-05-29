@@ -16,7 +16,7 @@ Write-Host -ForegroundColor DarkGray "NUGET Package Provider"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name NuGet -Force -Verbose" -Wait
 
 Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
-Start-Process PowerShell -ArgumentList "-NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
+Invoke-WebRequest powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/andrew-s-taylor/WindowsAutopilotInfo/main/Community%20Version/get-windowsautopilotinfocommunity.ps1)}" -OutFile "C:\OSDCloud\get-windowsautopilotinfocommunity.ps1"
 
 Stop-Transcript -Verbose | Out-File
 "@
