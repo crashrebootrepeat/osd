@@ -11,6 +11,6 @@ Start-Sleep -Seconds 5
 
 Write-Host -ForegroundColor Green "Install NuGet"
 
-Install-Script -Name get-windowsautopilotinfocommunity -Force
+Install-Script -Name get-windowsautopilotinfo -Force
 
 Stop-Transcript
