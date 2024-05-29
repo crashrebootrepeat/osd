@@ -15,7 +15,7 @@ Start-Process PowerShell -ArgumentList "-NoL -C Install-PackageProvider -Name Nu
 pause
 
 Write-Host -ForegroundColor DarkGray "Installing Get-WindowsAutoPilotInfoCommunity"
-Start-Process PowerShell -ArgumentList "-NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Install-Script -Name Get-WindowsAutoPilotInfo -Force -Verbose" -Wait
 pause                                                
 
 Stop-Transcript -Verbose | Out-File
