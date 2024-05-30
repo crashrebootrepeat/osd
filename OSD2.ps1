@@ -1,85 +1,45 @@
-﻿#=======================================================================
-#   PreOS: Update-Module
-#=======================================================================
+#================================================
+#   [PreOS] Update Module
+#================================================
+if ((Get-MyComputerModel) -match 'Virtual') {
+    Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
+    Set-DisRes 1600
+}
+
+Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
 Install-Module OSD -Force
-Import-Module OSD -Force
+
+Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
+Import-Module OSD -Force   
+
 #=======================================================================
-#   OS: Params and Start-OSDCloud
+#   [OS] Params and Start-OSDCloud
 #=======================================================================
 $Params = @{
-    OSBuild = "21H1"
-    OSEdition = "Pro"
-    OSLanguage = "en-gb"
-    OSLicense = "Retail"
-    SkipAutopilot = $true
-    SkipODT = $true
+    OSVersion = "Windows 11"
+    OSBuild = "23H2"
+    OSEdition = "Enterprise"
+    OSLanguage = "en-us"
+    OSLicense = "Volume"
+    ZTI = $true
+    Firmware = $false
 }
 Start-OSDCloud @Params
-#=======================================================================
-#   PostOS: AutopilotOOBE Configuration
-#=======================================================================
-$AutopilotOOBEJson = @'
-{
-    "Assign":  {
-                   "IsPresent":  true
-               },
-    "GroupTag":  "Enterprise",
-    "GroupTagOptions":  [
-                            "Development",
-                            "Enterprise"
-                        ],
-    "Hidden":  [
-                   "AddToGroup",
-                   "AssignedComputerName",
-                   "AssignedUser"
-               ],
-    "PostAction":  "Quit",
-    "Run":  "PowerShell",
-    "Title":  "OSDCloud Autopilot Registration"
-}
+
+
+#================================================
+#  [PostOS] SetupComplete CMD Command Line
+#================================================
+Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
+$SetupCompleteCMD = @'
+powershell.exe -Command Set-ExecutionPolicy Bypass -Force
+powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/crashrebootrepeat/osd/main/oobetasks.ps1)}"
 '@
-$AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
-#=======================================================================
-#   PostOS: OOBEDeploy Configuration
-#=======================================================================
-$OOBEDeployJson = @'
-{
-    "Autopilot":  {
-                      "IsPresent":  true
-                  },
-    "RemoveAppx":  [
-                       "CommunicationsApps",
-                       "OfficeHub",
-                       "People",
-                       "Skype",
-                       "Solitaire",
-                       "Xbox",
-                       "ZuneMusic",
-                       "ZuneVideo"
-                   ],
-    "UpdateDrivers":  {
-                          "IsPresent":  true
-                      },
-    "UpdateWindows":  {
-                          "IsPresent":  true
-                      }
-}
-'@
-$OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
+$SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
 #=======================================================================
-#   PostOS: AutopilotOOBE CMD Command Line
+#   Restart-Computer
 #=======================================================================
-$AutopilotCmd = @'
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-set path=%path%;C:\Program Files\WindowsPowerShell\Scripts
-start PowerShell -NoL -W Mi
-start /wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force
-start /wait PowerShell -NoL -C Start-AutopilotOOBE -Title 'GetModern Autopilot Registration' -GroupTag Enterprise -GroupTagOptions Development,Enterprise -Assign
-'@
-$AutopilotCmd | Out-File -FilePath "C:\Windows\Autopilot.cmd" -Encoding ascii -Force
-
-#=======================================================================
-#   PostOS: Restart-Computer
-#=======================================================================
-Restart-Computer
+Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
+Start-Sleep -Seconds 20
+wpeutil reboot
