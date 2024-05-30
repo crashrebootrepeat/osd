@@ -1,6 +1,4 @@
 ﻿$env:Path += ";C:\Program Files\WindowsPowerShell\Scripts"
-Start-AutopilotOOBE
-
 
 Function Get-WindowsAutoPilotInfo {
 
@@ -343,3 +341,5 @@ Function Get-WindowsAutoPilotInfo {
         }
     }
 }
+
+Get-WindowsAutoPilotInfo
