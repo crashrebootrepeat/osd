@@ -11,7 +11,7 @@ $OOBEScript =@"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
 Write-Host -ForegroundColor DarkGray "Starting PowerShell and Setting Directory"
-Start-Process -WorkingDirectory "C:\ProgramData\PCConfig\Autopilot" PowerShell.exe -NoNewWindow
+Start-Process PowerShell.exe -WorkingDirectory "C:\ProgramData\PCConfig\Autopilot"
 
 Stop-Transcript -Verbose | Out-File
 "@
