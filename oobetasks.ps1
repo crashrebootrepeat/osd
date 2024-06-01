@@ -11,18 +11,7 @@ $OOBEScript =@"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
 Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
-Start-Process PowerShell -ArgumentList "-NoL -C Install-Module OSD -Force -Verbose" -Wait
-
-Write-Host -ForegroundColor DarkGray "Executing AutopilotOOBE Module"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/crashrebootrepeat/osd/main/Start-AutopilotOOBE.ps1 -online" -Wait
-
-# Cleanup scheduled Tasks
-Write-Host -ForegroundColor DarkGray "Unregistering Scheduled Tasks"
-Unregister-ScheduledTask -TaskName "Scheduled Task for SendKeys" -Confirm:`$false
-Unregister-ScheduledTask -TaskName "Scheduled Task for OSDCloud post installation" -Confirm:`$false
-
-Write-Host -ForegroundColor DarkGray "Restarting Computer"
-Start-Process PowerShell -ArgumentList "-NoL -C Restart-Computer -Force" -Wait
+Start-Process PowerShell 
 
 Stop-Transcript -Verbose | Out-File
 "@
