@@ -44,7 +44,7 @@ Install-PackageProvider NuGet -Force -Verbose
 sleep -seconds 10
 Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose
 sleep -seconds 10
-Get-WindowsAutoPilotInfoCommunity -online -assign
+Get-WindowsAutoPilotInfoCommunity -online -TenantId '57a4b287-a8d2-452b-acfd-242d26c3630c' -AppId '235d10fe-187e-40a3-9230-10f190ea4f58' -AppSecret 'U-Q8Q~PJJ3r.K3eKG_0Iw6-555kI2RtaUGO_Adat' -assign -reboot
 '@
 $OOBECMD | Out-File -FilePath 'C:\ProgramData\PCConfig\AutoPilot\Setup.ps1' -Encoding ascii -Force
 
