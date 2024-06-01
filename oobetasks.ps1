@@ -10,8 +10,7 @@ $OOBEScript =@"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
-Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
-Start-Process PowerShell
+Write-Host -ForegroundColor DarkGray "Starting PowerShell and Setting Directory"
 Start-Process PowerShell | Set-Location "C:\ProgramData\PCConfig\Autopilot"
 
 Stop-Transcript -Verbose | Out-File
