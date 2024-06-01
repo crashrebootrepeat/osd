@@ -30,6 +30,7 @@ Start-OSDCloud @Params
 #  [PostOS] AutopilotOOBE CMD Command Line
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\System32\OOBE.cmd"
+Start /Wait PowerShell -NoL -C New-Item -ItemType Directory -Path C:\ -Name OSD -Force -Verbose
 $OOBECMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
