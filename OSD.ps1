@@ -27,10 +27,16 @@ $Params = @{
 Start-OSDCloud @Params
 
 #================================================
+#  [PostOS] Create PC Config Directory
+#================================================
+
+New-Item "C:\ProgramData\PCConfig" -ItemType Directory -Force | Out-Null
+New-Item "C:\ProgramData\PCConfig\AutoPilot" -ItemType Directory -Force | Out-Null
+
+#================================================
 #  [PostOS] AutopilotOOBE CMD Command Line
 #================================================
-Write-Host -ForegroundColor Green "Create C:\Windows\System32\OOBE.cmd"
-New-Item -ItemType Directory -Path C:\ -Name OSD -Force -Verbose
+Write-Host -ForegroundColor Green "C:\ProgramData\PCConfig\AutoPilot\Setup.cmd"
 $OOBECMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
@@ -38,7 +44,7 @@ Start /Wait PowerShell -NoL -C Install-PackageProvider NuGet -Force -Verbose
 Start /Wait PowerShell -NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose
 Start /Wait PowerShell -NoL -C Get-WindowsAutoPilotInfoCommunity -online -assign
 '@
-$OOBECMD | Out-File -FilePath 'C:\OSD\OOBE.cmd' -Encoding ascii -Force
+$OOBECMD | Out-File -FilePath 'C:\ProgramData\PCConfig\AutoPilot\Setup.cmd' -Encoding ascii -Force
 
 #=======================================================================
 #   Restart-Computer
