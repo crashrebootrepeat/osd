@@ -11,7 +11,8 @@ $OOBEScript =@"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
 Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
-Start-Process PowerShell 
+Start-Process PowerShell
+Start-Process PowerShell | Set-Location "C:\ProgramData\PCConfig\Autopilot"
 
 Stop-Transcript -Verbose | Out-File
 "@
