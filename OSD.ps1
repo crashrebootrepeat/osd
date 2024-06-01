@@ -34,17 +34,29 @@ New-Item "C:\ProgramData\PCConfig" -ItemType Directory -Force | Out-Null
 New-Item "C:\ProgramData\PCConfig\AutoPilot" -ItemType Directory -Force | Out-Null
 
 #================================================
-#  [PostOS] AutopilotOOBE CMD Command Line
+#  [PostOS] Create AutoPilot PS Script
 #================================================
-Write-Host -ForegroundColor Green "C:\ProgramData\PCConfig\AutoPilot\Setup.cmd"
+
+Write-Host -ForegroundColor Green "C:\ProgramData\PCConfig\AutoPilot\Setup.ps1"
 $OOBECMD = @'
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
-Start /Wait PowerShell -NoL -C Install-PackageProvider NuGet -Force -Verbose
-Start /Wait PowerShell -NoL -C Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose
-Start /Wait PowerShell -NoL -C Get-WindowsAutoPilotInfoCommunity -online -assign
+
+Install-PackageProvider NuGet -Force -Verbose
+sleep -seconds 10
+Install-Script Get-WindowsAutoPilotInfoCommunity -Force -Verbose
+sleep -seconds 10
+Get-WindowsAutoPilotInfoCommunity -online -assign
 '@
-$OOBECMD | Out-File -FilePath 'C:\ProgramData\PCConfig\AutoPilot\Setup.cmd' -Encoding ascii -Force
+$OOBECMD | Out-File -FilePath 'C:\ProgramData\PCConfig\AutoPilot\Setup.ps1' -Encoding ascii -Force
+
+#================================================
+#  [PostOS] SetupComplete CMD Command Line
+#================================================
+Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
+$SetupCompleteCMD = @'
+powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
+powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/crashrebootrepeat/osd/main/oobetasks.ps1)}"
+'@
+$SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
 #=======================================================================
 #   Restart-Computer
